@@ -18,22 +18,11 @@ class Graph
     // 3
     // 4
 
-public:
-    Graph(int _v) : v(_v)
-    {
-        adjacencyList.resize(v);
-    }
+#pragma region full functions
+    // FULL IMPLEMENTATIONS - HELPER FUNCTIONS CALL THESE
 
-    void addEdge(int first, int second)
+    void BFS(int startingVertex, std::vector<bool> &visitedVertex, std::queue<int> &queue)
     {
-        adjacencyList[first].push_back(second); // Adds second as a neighbour of first
-    }
-
-    void BFS(int startingVertex)
-    {
-        std::vector<bool> visitedVertex(v, false); // Vec will hold v bools initialized to false, i.e no vertex has been visited yet
-        std::queue<int> queue;                     // Queue for BFS traversal
-
         queue.push(startingVertex);           // Add first vertex to queue, we'll need it to push its neighbours too
         visitedVertex[startingVertex] = true; // Mark starting vertex as visited
 
@@ -56,11 +45,8 @@ public:
         std::cout << ']';
     }
 
-    void DFS(int startingVertex)
+    void DFS(int startingVertex, std::vector<bool> &visitedVertex, std::stack<int> &stack)
     {
-        std::vector<bool> visitedVertex(v, false); // Vec will hold v bools initialized to false, i.e no vertex has been visited yet
-        std::stack<int> stack;                     // Stack for DFS traversal
-
         stack.push(startingVertex);           // Place first neighbour on top, we'll need it to push its neighbours too
         visitedVertex[startingVertex] = true; // Mark starting vertex as visited
 
@@ -83,13 +69,10 @@ public:
         std::cout << ']';
     }
 
-    bool hasCycle()
+    bool hasCycle(std::vector<bool> &visitedVertex, std::queue<int> &queue)
     {
         // LOGIC BEFORE IMPLEMENTATION:
         // Visit vertices with BFS, mark them as visited. If at any point we reach a visited vertex, return true.
-
-        std::vector<bool> visitedVertex(v, false);
-        std::queue<int> queue;
 
         queue.push(0);           // Add first vertex to queue, no input this time so first vertex is 0
         visitedVertex[0] = true; // Mark starting vertex as visited
@@ -115,17 +98,13 @@ public:
         return false;
     }
 
-    bool isBipartite()
+    bool isBipartite(std::vector<bool> &visitedVertex, std::vector<bool> &coloredVertex, std::queue<int> &queue)
     {
         // PRE-IMPLEMENTATION LOGIC:
         // A graph is bipartite if we can paint all vertices in two diferent colors such that no two adjacent vertices are of the same color.
         // Traverse all vertices with BFS. Paint the first vertex red before starting.
         // For each neighbour, if they have not been visited, paint them the opposite color. Mark as visited and add them to queue.
         // If they have been visited, check for color. If it's different from the current vertex color, all good. Else return false.
-
-        std::vector<bool> visitedVertex(v, false);
-        std::vector<bool> coloredVertex(v, false);
-        std::queue<int> queue;
 
         queue.push(0);           // Add first vertex to queue, no input this time so first vertex is 0
         visitedVertex[0] = true; // Mark starting vertex as visited
@@ -155,4 +134,61 @@ public:
         }
         return true; // YYYEAAA
     }
+
+    // END OF FULL FUNCTIONS
+#pragma endregion
+
+public:
+    Graph(int _v) : v(_v)
+    {
+        adjacencyList.resize(v);
+    }
+
+    void addEdge(int first, int second)
+    {
+        adjacencyList[first].push_back(second); // Adds second as a neighbour of first
+    }
+
+#pragma region helpers
+    void BFS()
+    {
+        std::vector<bool> visitedVertex(v, false); // Vec will hold v bools initialized to false, i.e no vertex has been visited yet
+        std::queue<int> queue;                     // Queue for BFS traversal
+
+        for (auto i = 0; i < v; ++i)
+            if (!visitedVertex[i])
+                BFS(i, visitedVertex, queue);
+    }
+
+    void DFS()
+    {
+        std::vector<bool> visitedVertex(v, false); // Vec will hold v bools initialized to false, i.e no vertex has been visited yet
+        std::stack<int> stack;                     // Stack for DFS traversal
+        for (auto i = 0; i < v; ++i)
+            if (!visitedVertex[i])
+                DFS(i, visitedVertex, stack);
+    }
+
+    bool hasCycle()
+    {
+        std::vector<bool> visitedVertex(v, false);
+        std::queue<int> queue;
+        for (int i = 0; i < v; ++i)
+            if (!visitedVertex[i])
+                if (hasCycle(visitedVertex, queue))
+                    return true;
+        return false;
+    }
+
+    bool isBipartite()
+    {
+        std::vector<bool> visitedVertex(v, false);
+        std::vector<bool> coloredVertex(v, false);
+        std::queue<int> queue;
+        for (int i = 0; i < v; ++i)
+            if (!isBipartite(visitedVertex, coloredVertex, queue))
+                return false;
+        return true;
+    }
+#pragma endregion
 };

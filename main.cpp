@@ -16,7 +16,7 @@ void traversalTests()
     g1->addEdge(1, 2);
     g1->addEdge(2, 3);
     g1->addEdge(2, 4);
-    g1->BFS(0); // BFS with 0 as starting vertex, should output [ 0 1 2 3 4 ]
+    g1->BFS(); // BFS, should output [ 0 1 2 3 4 ]
 
     cl();
 
@@ -28,12 +28,12 @@ void traversalTests()
     g2->addEdge(3, 4); //   \     | /
     g2->addEdge(3, 5); //     2 - 4
     g2->addEdge(4, 3);
-    g2->BFS(0); // BFS with 0 as starting vertex, should output [ 0 2 1 3 4 5 ]
+    g2->BFS(); // BFS, should output [ 0 2 1 3 4 5 ]
     // 2 does print before 1 :)
 
     cl();
 
-    g2->BFS(3); // BFS with 3 as starting vertex, should output [ 3 4 5 ]
+    g2->BFS(); // BFS, should output [ 3 4 5 ]
 
     cl();
 
@@ -63,7 +63,7 @@ void traversalTests()
     //   \ 
     //     3 - 12 - 13 - 14 - 15
 
-    g3->DFS(0); // DFS with 0 as starting vertex, should output [ 0 3 12 13 14 15 2 8 9 10 11 1 4 5 6 7 ]
+    g3->DFS(); // DFS, should output [ 0 3 12 13 14 15 2 8 9 10 11 1 4 5 6 7 ]
     // It did not start with 1 after 0, even though 1 was inserted first
     // This is because of FILO handling:
     // For each neighbour, push it into the stack: 1, 2, 3
@@ -77,7 +77,7 @@ void traversalTests()
 
     cl();
 
-    g3->BFS(0); // BFS with 0 as starting vertex, should output [ 0 1 2 3 4 8 12 5 9 13 6 10 14 7 11 15 ]
+    g3->BFS(); // BFS, should output [ 0 1 2 3 4 8 12 5 9 13 6 10 14 7 11 15 ]
 
     std::cout << std::endl
               << "--------END OF BFS AND DFS TEST--------" << std::endl;
