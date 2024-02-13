@@ -7,8 +7,10 @@ void cl()
               << std::endl;
 }
 
-int main()
+void traversalTests()
 {
+    std::cout << "--------START OF BFS AND DFS TEST--------" << std::endl;
+
     auto g1 = new Graph(5);
     g1->addEdge(0, 1);
     g1->addEdge(1, 2);
@@ -76,5 +78,70 @@ int main()
     cl();
 
     g3->BFS(0); // BFS with 0 as starting vertex, should output [ 0 1 2 3 4 8 12 5 9 13 6 10 14 7 11 15 ]
+
+    std::cout << std::endl
+              << "--------END OF BFS AND DFS TEST--------" << std::endl;
+    cl();
+}
+
+void cycleDetectionTests()
+{
+    // Pretty self-explanatory stuff
+    std::cout << "--------START OF CYCLE DETECTION TEST--------" << std::endl;
+
+    auto g1 = new Graph(5);
+    g1->addEdge(0, 1); //    1 - -
+    g1->addEdge(0, 2); //   /    |
+    g1->addEdge(0, 3); // 0 - 2  |
+    g1->addEdge(3, 4); //   \    |
+    g1->addEdge(4, 1); //    3 - 4
+    std::cout << std::boolalpha << g1->hasCycle();
+
+    cl();
+
+    auto g2 = new Graph(6);
+    g2->addEdge(0, 1);
+    g2->addEdge(1, 2);
+    g2->addEdge(2, 3);
+    g2->addEdge(3, 4);
+    g2->addEdge(4, 5); // 0 - 1 - 2 - 3 - 4 - 5
+    std::cout << std::boolalpha << g2->hasCycle();
+
+    std::cout << std::endl
+              << "--------END OF CYCLE DETECTION TEST--------" << std::endl;
+    cl();
+}
+
+void bipartiteTests()
+{
+    std::cout << "--------START OF BIPARTITE TEST--------" << std::endl;
+
+    auto g1 = new Graph(6);
+    g1->addEdge(0, 1);
+    g1->addEdge(1, 2);
+    g1->addEdge(2, 3);
+    g1->addEdge(3, 4);
+    g1->addEdge(4, 5);
+    std::cout << std::boolalpha << g1->isBipartite(); // Should output true
+
+    cl();
+
+    auto g2 = new Graph(6);
+    g2->addEdge(0, 1);                                //         3
+    g2->addEdge(1, 2);                                //       / |
+    g2->addEdge(1, 3);                                // 0 - 1 - 2
+    g2->addEdge(2, 3);                                //
+    std::cout << std::boolalpha << g2->isBipartite(); // Should output false
+
+    std::cout << std::endl
+              << "--------END OF BIPARTITE TEST--------" << std::endl;
+    cl();
+}
+
+int main()
+{
+    traversalTests();
+    cycleDetectionTests();
+    bipartiteTests();
     return 0;
 }
